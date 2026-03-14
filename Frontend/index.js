@@ -1,3 +1,4 @@
+
 const validateData = (userData) => {
     let errors = [];
     if (!userData.firstName) {
@@ -55,17 +56,20 @@ const submitData = async () => {
             errors: errors
         }
     }
-    
-    const response = await axios.post('http://localhost:8000/users', userData);
+     const response = await axios.post('http://localhost:8000/users', userData);
      console.log('response', response);
      messageDOM.innerText = "บันทึกข้อมูลสำเร็จ";
-     messageDOM.className = "message success";
+     messageDOM.className = "message success";          
     } catch (error) {
         console.log('Error Message:', error.message);
         console.log('Error Details:', error.errors);
-        //if (error.response) {
-          //  console.error('Error response:', error.response.data);
-        // }
+        if (error.response) {
+        console.error('Error response:', error.response.data.message);
+        error.message = error.response.data.message
+        error.errors = error.response.data.errors
+    }
+
+
         let htmlData = '<div>'
         htmlData += `<div>` + error.message + `</div>`;
         htmlData += '<ul>';
